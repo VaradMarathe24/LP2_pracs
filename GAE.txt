@@ -1,0 +1,5 @@
+git clone Repository link.git 
+ls
+cd Repository name
+ls
+python python_finename.py
