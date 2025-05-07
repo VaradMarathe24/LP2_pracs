@@ -1,0 +1,30 @@
+public class SimpleCalculator {
+    public static Integer add(Integer a, Integer b) {
+        return a + b;
+    }
+
+    public static Integer subtract(Integer a, Integer b) {
+        return a - b;
+    }
+
+    public static Integer multiply(Integer a, Integer b) {
+        return a * b;
+    }
+
+    public static Decimal divide(Decimal a, Decimal b) {
+        if (b == 0) {
+            return null; // avoid division by zero
+        }
+        return a / b;
+    }
+}
+
+Integer sum = SimpleCalculator.add(10, 5);
+Integer diff = SimpleCalculator.subtract(10, 5);
+Integer prod = SimpleCalculator.multiply(10, 5);
+Decimal quot = SimpleCalculator.divide(10, 5);
+
+System.debug('Addition: ' + sum);
+System.debug('Subtraction: ' + diff);
+System.debug('Multiplication: ' + prod);
+System.debug('Division: ' + quot);
