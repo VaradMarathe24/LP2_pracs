@@ -1,0 +1,188 @@
+Here is a **detailed, step-by-step explanation** of how to build an **Event Management Application** in **Salesforce Lightning**, suitable for a capstone project, real-world use, or showcasing in CC (custom app building). Each step includes the rationale, Salesforce components used, and how they interconnect.
+
+---
+
+## **Step 1: Define the App Objective**
+
+**Goal**: Build an app that allows event managers to:
+
+* Create/manage events
+* Register attendees and track participation
+* Add speakers for sessions
+* Collect and analyze feedback
+
+**User Roles** (optional for advanced setups):
+
+* **Event Admin**: Full access to manage everything
+* **Attendee**: Can register, give feedback
+* **Speaker**: View assigned sessions
+
+---
+
+## **Step 2: Create Custom Objects**
+
+Go to **Setup > Object Manager > New Custom Object**.
+
+### a. **Event\_\_c**
+
+Purpose: Core object to define events
+
+| Field Name       | Type      | Purpose                       |
+| ---------------- | --------- | ----------------------------- |
+| Name             | Text      | Event Name                    |
+| Event\_Date\_\_c | Date      | Schedule date                 |
+| Location\_\_c    | Text      | Physical/Online venue         |
+| Type\_\_c        | Picklist  | Seminar, Workshop, Conference |
+| Status\_\_c      | Picklist  | Planned, Ongoing, Completed   |
+| Capacity\_\_c    | Number    | Max attendees allowed         |
+| Description\_\_c | Long Text | Detailed info                 |
+
+### b. **Attendee\_\_c**
+
+Purpose: Tracks users attending an event
+
+| Field Name      | Type     | Purpose                |
+| --------------- | -------- | ---------------------- |
+| Name            | Text     | Attendee name          |
+| Email\_\_c      | Email    | Email ID               |
+| Phone\_\_c      | Phone    | Phone number           |
+| Registered\_\_c | Checkbox | Indicates registration |
+| Event\_\_c      | Lookup   | Links to Event\_\_c    |
+
+### c. **Speaker\_\_c**
+
+Purpose: Manages speakers for each event
+
+| Field Name | Type      | Purpose         |
+| ---------- | --------- | --------------- |
+| Name       | Text      | Speaker name    |
+| Bio\_\_c   | Long Text | Profile summary |
+| Topic\_\_c | Text      | Session topic   |
+| Event\_\_c | Lookup    | Linked event    |
+
+### d. **Feedback\_\_c**
+
+Purpose: Stores post-event feedback from attendees
+
+| Field Name    | Type         | Purpose             |
+| ------------- | ------------ | ------------------- |
+| Event\_\_c    | Lookup       | Linked Event        |
+| Attendee\_\_c | Lookup       | Linked Attendee     |
+| Rating\_\_c   | Number (1–5) | Feedback score      |
+| Comments\_\_c | Long Text    | Open-ended feedback |
+
+**Relations:**
+
+* One Event → Many Attendees, Speakers, Feedback
+* One Attendee → One Feedback (per event)
+
+---
+
+## **Step 3: Lightning App Builder Setup**
+
+### a. **Create Lightning App**
+
+Go to **Setup > App Manager > New Lightning App**
+
+* **App Name**: Event Management App
+* **Utility Bar (optional)**: Add “Recent Items” or “Notes”
+* **Navigation Items (Tabs)**: Events, Attendees, Speakers, Feedback, Reports
+
+### b. **Custom Tab Creation**
+
+Enable each custom object to appear as a tab (under the object settings > Tab Settings > Default On).
+
+---
+
+## **Step 4: Lightning Record Pages**
+
+Use **Lightning App Builder** to customize how each record (Event, Attendee, etc.) appears.
+
+### For Event\_\_c Record Page:
+
+* Add related lists: Attendees, Speakers, Feedback
+* Show status, date, and type with highlights panel
+* Add embedded charts (e.g., count of attendees registered)
+
+### For Attendee\_\_c:
+
+* Add Event field, feedback submitted
+* Add quick actions like "Mark as Attended"
+
+### Use **Dynamic Forms**:
+
+* Show/hide fields based on Status
+
+  * E.g., show Feedback section only if Status = Completed
+
+---
+
+## **Step 5: Flows and Automation**
+
+### a. **Screen Flow: Public Attendee Registration**
+
+* Input screen: Name, Email, Phone, Event Selection (Dropdown)
+* Action: Create new Attendee\_\_c record, set Registered = TRUE
+* Output: Confirmation screen or email
+
+**Where to use:** Community page or embedded in an Event record page
+
+---
+
+### b. **Record-Triggered Flow: Registration Confirmation**
+
+* Trigger: New Attendee\_\_c created with Registered\_\_c = TRUE
+* Action: Send an email to Email\_\_c with event details
+
+---
+
+### c. **Scheduled Flow: Send Feedback Requests**
+
+* Trigger: Daily, check for Event\_\_c where `Event_Date__c = TODAY() - 1`
+* Action: For each related Attendee, send an email with a feedback form link
+
+---
+
+## **Step 6: Validation Rules and Logic**
+
+### a. **Validation Rules**
+
+1. **No past event creation**:
+
+```plaintext
+Event_Date__c < TODAY()
+```
+
+2. **Prevent overbooking (Flow + Formula)**:
+
+* Use a Roll-Up Summary field on Event to count Attendees
+* Add a Flow that checks: `Number_of_Attendees__c < Capacity__c`
+
+### b. **Conditional Field Requirements**
+
+* Make `Topic__c` required only if Speaker is added
+* Make `Feedback__c.Rating__c` required if Comments are filled
+
+---
+
+## **Step 7: Reports and Dashboards**
+
+### Key Reports:
+
+* **Event Summary**: Event Name, Date, Count of Registered Attendees
+* **Attendance Report**: List of attendees per event
+* **Speaker Coverage**: Events per speaker
+* **Feedback Analysis**: Avg. rating per event
+
+### Dashboards:
+
+1. **Event KPIs Dashboard**:
+
+   * Events this Month
+   * Top Events by Attendance
+   * Avg. Feedback Score
+
+2. **Registration Funnel**:
+
+   * Planned Events → Attendees → Feedback Submitted
+
