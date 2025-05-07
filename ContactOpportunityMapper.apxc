@@ -1,0 +1,22 @@
+public class ContactOpportunityMapper {
+    public static Map<Id, List<Opportunity>> mapContactToOpportunities() {
+        Map<Id, List<Opportunity>> contactOppMap = new Map<Id, List<Opportunity>>();
+
+        for (Opportunity opp : [SELECT Id, Name, ContactId FROM Opportunity WHERE ContactId != null]) {
+            if (!contactOppMap.containsKey(opp.ContactId)) {
+                contactOppMap.put(opp.ContactId, new List<Opportunity>());
+            }
+            contactOppMap.get(opp.ContactId).add(opp);
+        }
+        return contactOppMap;
+    }
+}
+
+Map<Id, List<Opportunity>> result = ContactOpportunityMapper.mapContactToOpportunities();
+
+for (Id contactId : result.keySet()) {
+    System.debug('Contact ID: ' + contactId);
+    for (Opportunity opp : result.get(contactId)) {
+        System.debug('-- Opportunity: ' + opp.Name);
+    }
+}
