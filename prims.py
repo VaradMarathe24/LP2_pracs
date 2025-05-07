@@ -40,9 +40,20 @@ def prims_simple(graph):
         mst_edges.append((parent[i], i, graph[i][parent[i]]))
         cost += graph[i][parent[i]]
 
-    print("\nEdge List Format (for visualization):")
+    print("\nEdge List Format:")
     for u, v, w in mst_edges:
         print(f"({u}, {v}) -> weight: {w}")
 
     print(f"\nTotal cost of MST: {cost}")
     print(f"Total comparisons made during selection: {total_comparisons}")
+
+# Sample graph (undirected and weighted)
+graph = [
+    [0, 2, 0, 6, 0],
+    [2, 0, 3, 8, 5],
+    [0, 3, 0, 0, 7],
+    [6, 8, 0, 0, 9],
+    [0, 5, 7, 9, 0]
+]
+
+prims_simple(graph)
