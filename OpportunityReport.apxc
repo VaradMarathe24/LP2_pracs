@@ -1,0 +1,19 @@
+public class OpportunityReport {
+    public static String generateReport() {
+        List<Opportunity> opps = [
+            SELECT Name, Probability, CloseDate
+            FROM Opportunity
+            WHERE Probability > 50
+            ORDER BY CloseDate
+        ];
+
+        String report = '--- Opportunity Report ---\n';
+        for (Opportunity opp : opps) {
+            report += 'Name: ' + opp.Name + ', Probability: ' + opp.Probability + '%, Close Date: ' + opp.CloseDate + '\n';
+        }
+        return report;
+    }
+}
+
+String report = OpportunityReport.generateReport();
+System.debug(report);
