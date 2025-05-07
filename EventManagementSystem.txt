@@ -1,4 +1,5 @@
-Here is a **detailed, step-by-step explanation** of how to build an **Event Management Application** in **Salesforce Lightning**, suitable for a capstone project, real-world use, or showcasing in CC (custom app building). Each step includes the rationale, Salesforce components used, and how they interconnect.
+Username: varad@24mail.co
+Password: VarMar24@Pun
 
 ---
 
