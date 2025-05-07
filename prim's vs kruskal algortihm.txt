@@ -1,0 +1,19 @@
+| **Aspect**                           | **Prim's Algorithm**                                         | **Kruskal's Algorithm**                                     |
+| ------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------- |
+| **Type of Algorithm**                | Greedy                                                       | Greedy                                                      |
+| **Main Purpose**                     | Find Minimum Spanning Tree (MST)                             | Find Minimum Spanning Tree (MST)                            |
+| **Approach**                         | Grows the MST from a **starting vertex**                     | Adds **edges in increasing weight**, regardless of position |
+| **Graph Representation**             | Works best with **Adjacency Matrix**                         | Works best with **Edge List**                               |
+| **Initial Condition**                | Starts from an arbitrary vertex                              | Starts with all vertices as separate sets                   |
+| **Edge Selection**                   | Selects **minimum weight edge** from the **connected** nodes | Selects **minimum weight edge** from the **entire graph**   |
+| **Cycle Detection**                  | Avoided by checking visited nodes                            | Handled using **Union-Find / Disjoint Set**                 |
+| **Suitable for**                     | **Dense graphs** (more edges)                                | **Sparse graphs** (fewer edges)                             |
+| **Time Complexity (using heap)**     | O(E log V) with min-heap + adjacency list                    | O(E log E) with sorting and union-find                      |
+| **Edge Sorting Needed?**             | ❌ No                                                         | ✅ Yes                                                       |
+| **Data Structures Used**             | Priority Queue / Min-Heap, Visited Array                     | Union-Find (Disjoint Sets), Sorted Edge List                |
+| **Edge Addition**                    | Adds edges that connect to already included vertices         | Adds edges that do **not form a cycle**                     |
+| **Connectivity Required Initially?** | ✅ Yes (connected graph needed)                               | ❌ No (can handle disconnected graph — creates a forest)     |
+| **Result in Disconnected Graph**     | ❌ Will not work properly                                     | ✅ Forms Minimum Spanning Forest                             |
+| **Graph Type**                       | Undirected, connected, weighted                              | Undirected, weighted (not necessarily connected)            |
+| **MST Shape**                        | Grows like a **tree**, vertex by vertex                      | Grows like **forest**, merging trees                        |
+| **Determinism (with same weights)**  | More deterministic (depends on start vertex)                 | Less deterministic (depends on edge order after sorting)    |
