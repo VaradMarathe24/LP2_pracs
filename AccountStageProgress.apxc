@@ -1,0 +1,17 @@
+public class AccountStageProgress {
+public static void updateProgress() {
+List<Account> accs = \[SELECT Id, (SELECT StageName FROM Opportunities) FROM Account];
+for (Account acc : accs) {
+Integer score = 0;
+for (Opportunity opp : acc.Opportunities) {
+if (opp.StageName == 'Prospecting') score += 25;
+else if (opp.StageName == 'Negotiation') score += 50;
+}
+acc.Stage\_Progress\_\_c = score;
+}
+update accs;
+}
+}
+
+AccountStageProgress.updateProgress();
+
